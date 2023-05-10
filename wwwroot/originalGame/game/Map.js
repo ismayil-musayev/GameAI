@@ -203,7 +203,7 @@ class Map {
   }
 
   addTown(x, y, board) {
-    const townBgDirtImg = "images/cd_" + this.rand(6) + ".png";
+    const townBgDirtImg = "originalGame/images/cd_" + this.rand(6) + ".png";
     const townBgGrassImg = this.images["townBgGrass" + (this.rand(6) + 1)].img;
     const flipH = this.rand(2);
     const flipV = this.rand(2);
@@ -298,7 +298,7 @@ class Map {
           rotationDegrees: -1,
         }
 
-        gridImages[index].dirtBg.src = "images/ld_" + (this.rand(6) + 1) + ".png";
+        gridImages[index].dirtBg.src = "originalGame/images/ld_" + (this.rand(6) + 1) + ".png";
         gridImages[index].grassBg = this.images["grassBg" + (this.rand(6) + 1)].img;
 
         const flipH = this.rand(2);

@@ -2,7 +2,7 @@ import { Game } from './Game.js'
 
 $(function(){
   const game = new Game();
-  game.generateRandomMap();
+  game.generateNewMap(1);
 
   var mapNumberInput = document.getElementById('mapNumberInput');
   var changeMapButton = document.getElementById('changeMapButton');
@@ -56,5 +56,15 @@ $(function(){
       }
     }, 1000);
   };
+
+    var makeTurnButton = document.getElementById('makeTurnButton');
+    makeTurnButton.disabled = true; // Disable until map is loaded
+    makeTurnButton.onclick = function () {
+        if (game.isVictory()) {
+            return;
+        }
+
+        game.runTurn();
+    };
 
 });

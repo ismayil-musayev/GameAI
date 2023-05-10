@@ -10,20 +10,20 @@ class Game {
   prepareImages() {
     var images = {};
     for (var i = 1; i <= 6; i++) {
-      images["grassBg" + i] = { img: null , path: 'images/l_' + i + '.png', status: 'none' };
+      images["grassBg" + i] = { img: null , path: 'originalGame/images/l_' + i + '.png', status: 'none' };
     }
     for (var i = 1; i <= 6; i++) {
-      images["seaBg" + i] = { img: null , path: 'images/m_' + i + '.png', status: 'none' };
+      images["seaBg" + i] = { img: null , path: 'originalGame/images/m_' + i + '.png', status: 'none' };
     }
     for (var i = 1; i <= 6; i++) {
-      images["townBgGrass" + i] = { img: null , path: 'images/c_' + i + '.png', status: 'none' };
+      images["townBgGrass" + i] = { img: null , path: 'originalGame/images/c_' + i + '.png', status: 'none' };
     }
-    images["city"] = { img: null , path: 'images/city.png', status: 'none' };
-    images["port"] = { img: null , path: 'images/port.png', status: 'none' };
-    images["capital0"] = { img: null , path: 'images/capital_red.png', status: 'none' };
-    images["capital1"] = { img: null , path: 'images/capital_violet.png', status: 'none' };
-    images["capital2"] = { img: null , path: 'images/capital_blue.png', status: 'none' };
-    images["capital3"] = { img: null , path: 'images/capital_green.png', status: 'none' };
+    images["city"] = { img: null , path: 'originalGame/images/city.png', status: 'none' };
+    images["port"] = { img: null , path: 'originalGame/images/port.png', status: 'none' };
+    images["capital0"] = { img: null , path: 'originalGame/images/capital_red.png', status: 'none' };
+    images["capital1"] = { img: null , path: 'originalGame/images/capital_violet.png', status: 'none' };
+    images["capital2"] = { img: null , path: 'originalGame/images/capital_blue.png', status: 'none' };
+    images["capital3"] = { img: null , path: 'originalGame/images/capital_green.png', status: 'none' };
     return images;
   }
 
@@ -113,6 +113,9 @@ class Game {
 
         var startBattleButton = document.getElementById('startBattleButton');
         startBattleButton.disabled = false;
+
+        var makeTurnButton = document.getElementById('makeTurnButton');
+        makeTurnButton.disabled = false;
       });
   }
 

@@ -140,24 +140,6 @@ public class Bot
             return totalProfitability;
         }
 
-        int orderMoves(Field a, Field b)
-        {
-            // Sort by profitability
-            var aValue = a.TmpProf;
-            var bValue = b.TmpProf;
-            if (aValue > bValue)
-            {
-                return -1;
-            }
-
-            if (aValue < bValue)
-            {
-                return 1;
-            }
-
-            return 0;
-        }
-
         Field findBestMoveVal(Army army)
         {
             var moves = PathFinder.GetPossibleMoves(army.Field, true, false);
@@ -167,7 +149,8 @@ public class Bot
                 moves[i].TmpProf = finalProfitability(moves[i], army);
             }
 
-            moves.Sort(orderMoves);
+            moves = moves.Order(new FieldComparer()).ToList();
+
             return moves[0];
         }
 
@@ -258,24 +241,6 @@ public class Bot
 
     public static List<Army> SupportArmy(int party, Army army, Field field, Board board)
     {
-        int orderMoves(Field a, Field b)
-        {
-            var aValue = a.TmpProf;
-            var bValue = b.TmpProf;
-
-            if (aValue > bValue)
-            {
-                return -1;
-            }
-
-            if (aValue < bValue)
-            {
-                return 1;
-            }
-
-            return 0;
-        }
-
         Field findBestMoveVal(Army army)
         {
             var moves = PathFinder.GetPossibleMoves(army.Field, true, false);
@@ -290,7 +255,7 @@ public class Bot
                 }
             }
 
-            supportMoves.Sort(orderMoves);
+            supportMoves = supportMoves.Order(new FieldComparer()).ToList();
             return supportMoves[0];
         }
 
@@ -342,5 +307,25 @@ public class Bot
         public int Count { get; set; }
         public int NonEnemyLand { get; set; }
         public bool WaitForSupport { get; set; }
+    }
+}
+
+public class FieldComparer : IComparer<Field>
+{
+    public int Compare(Field a, Field b)
+    {
+        var aValue = a.TmpProf;
+        var bValue = b.TmpProf;
+        if (aValue > bValue)
+        {
+            return -1;
+        }
+
+        if (aValue < bValue)
+        {
+            return 1;
+        }
+
+        return 0;
     }
 }

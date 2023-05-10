@@ -23,4 +23,9 @@ public class Army
 
     public Army Waiting { get; set; }
     public bool IsWaiting { get; set; }
+
+    public override string ToString()
+    {
+        return $"Party {Party}; Count: {Count}; Morale {Morale}; Profitability: {Profitability}";
+    }
 }

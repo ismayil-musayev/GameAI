@@ -1216,32 +1216,7 @@ public class Map
     public static void MakeMove(int party, Board board/*, bool init*/)
     {
         var profitability = Bot.CalcArmiesProfitability(party, board);
-        profitability.Sort(orderArmies);
-
-        static int orderArmies(Army a, Army b)
-        {
-            var armyAProfitability = a.Profitability;
-            var armyBProfitability = b.Profitability;
-            if (armyAProfitability > armyBProfitability)
-            {
-                return -1;
-            }
-            if (armyAProfitability < armyBProfitability)
-            {
-                return 1;
-            }
-            var armyATotal = a.Count + a.Morale;
-            var armyBTotal = b.Count + b.Morale;
-            if (armyATotal > armyBTotal)
-            {
-                return -1;
-            }
-            if (armyATotal < armyBTotal)
-            {
-                return 1;
-            }
-            return 0;
-        }
+        profitability = profitability.Order(new ArmyComparer()).ToList();
 
         if (profitability.Count == 0)
         {
@@ -1269,7 +1244,7 @@ public class Map
             var supportArmies = Bot.SupportArmy(party, profitability[0], profitability[0].Move, board);
             if (supportArmies.Count > 0)
             {
-                supportArmies.Sort(orderArmies);
+                supportArmies = supportArmies.Order(new ArmyComparer()).ToList();
                 MoveArmy(supportArmies[0], supportArmies[0].Move, board);
             }
             else
@@ -1462,5 +1437,33 @@ public class Map
             movePoints = movableArmyCount;
         }
         return movePoints;
+    }
+}
+
+public class ArmyComparer : IComparer<Army>
+{
+    public int Compare(Army a, Army b)
+    {
+        var armyAProfitability = a.Profitability;
+        var armyBProfitability = b.Profitability;
+        if (armyAProfitability > armyBProfitability)
+        {
+            return -1;
+        }
+        if (armyAProfitability < armyBProfitability)
+        {
+            return 1;
+        }
+        var armyATotal = a.Count + a.Morale;
+        var armyBTotal = b.Count + b.Morale;
+        if (armyATotal > armyBTotal)
+        {
+            return -1;
+        }
+        if (armyATotal < armyBTotal)
+        {
+            return 1;
+        }
+        return 0;
     }
 }
