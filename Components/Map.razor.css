@@ -1,0 +1,39 @@
+﻿.map {
+}
+
+.map-row {
+    height: 50px;
+    white-space: nowrap;
+}
+
+.map-col-even,
+.map-col-odd {
+    height: 100%;
+    display: inline-block;
+    margin-left: -14.43px; /*(= -height * 1.1547 / 4) */
+}
+
+.map-col-odd {
+    transform: translate(0, 50%);
+}
+
+.hexagon {
+    position: relative;
+    height: 100%;
+    aspect-ratio: 1.1547 / 1;
+    display: inline-block;
+}
+
+    .hexagon .hex-border {
+        position: absolute;
+    }
+
+    .hexagon .hex-content {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        white-space: break-spaces;
+    }

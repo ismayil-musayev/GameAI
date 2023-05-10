@@ -1,0 +1,15 @@
+﻿@page "/"
+
+<div class="container">
+    <div class="mb-2">
+        <input @bind="Map" @bind:event="oninput" type="number" disabled="@gameRunning" />
+        <button type="button" class="btn btn-primary" disabled="@gameRunning" @onclick="ChangeMap">Change Map</button>
+        <button type="button" class="btn btn-primary" disabled="@gameRunning" @onclick="RandomMap">Random Map</button>
+        <button type="button" class="btn btn-success" disabled="@gameRunning" @onclick="StartBattle">Start Battle</button>
+        <button type="button" class="btn btn-success" disabled="@gameRunning" @onclick="MakeTurn">Make Turn</button>
+        <a href="/originalGame.html" target="_blank">original game</a>
+    </div>
+    <div>
+        <Map @ref="board" Board="game.Board" />
+    </div>
+</div>

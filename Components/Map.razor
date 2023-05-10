@@ -1,0 +1,55 @@
+﻿@if (Board is not null)
+{
+    @Board.Turns
+    <div class="map">
+        @for (int i = 0; i < height; i++)
+        {
+            <div class="map-row">
+                @for (int j = 0; j < width; j++)
+                {
+                    var field = Board.Fields[j][i];
+                    <div class="@(j % 2 == 0 ? "map-col-even" : "map-col-odd")">
+                        <div class="hexagon">
+                            <svg class="hex-border" width="100%" height="100%" viewBox="0 0 252.225646972656225 218.43383026123047">
+                                <polygon fill="@GetColor(field)" points="252.225646972656225,109.21691131591797 189.169250488281245,218.43383026123047 63.056411743164065,218.43383026123047 0,109.21691131591797 63.056411743164065,0 189.169250488281245,0 252.225646972656225,109.21691131591797" stroke="#fff" stroke-width="1" />
+                            </svg>
+                            <div class="hex-content">
+                                @field.TownName&nbsp;
+                                @*@field.Type*@
+                                @if (field.Army is not null)
+                                {
+                                    <text>
+                                        @field.Army.Count/@field.Army.Morale
+                                    </text>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public GameHexEmpire.Models.Board Board { get; set; }
+
+    public void Refresh() => StateHasChanged();
+
+    string GetColor(GameHexEmpire.Models.Field field)
+    {
+        if (field.Type == GameHexEmpire.Models.Type.Water) return "rgba(0, 0, 255, 0.5)";
+
+        return field.Party switch
+        {
+            0 => "rgba(255, 0, 0, 0.5)",
+            1 => "rgba(255, 0, 255, 0.5)",
+            2 => "rgba(0, 187, 255, 0.5)",
+            3 => "rgba(0, 255, 0, 0.5)",
+            _ => "darkgreen",
+        };
+    }
+
+    int height = 11, width = 20;
+}
