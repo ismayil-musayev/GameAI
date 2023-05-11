@@ -1438,32 +1438,32 @@ public class Map
         }
         return movePoints;
     }
-}
 
-public class ArmyComparer : IComparer<Army>
-{
-    public int Compare(Army a, Army b)
+    private class ArmyComparer : IComparer<Army>
     {
-        var armyAProfitability = a.Profitability;
-        var armyBProfitability = b.Profitability;
-        if (armyAProfitability > armyBProfitability)
+        public int Compare(Army a, Army b)
         {
-            return -1;
+            var armyAProfitability = a.Profitability;
+            var armyBProfitability = b.Profitability;
+            if (armyAProfitability > armyBProfitability)
+            {
+                return -1;
+            }
+            if (armyAProfitability < armyBProfitability)
+            {
+                return 1;
+            }
+            var armyATotal = a.Count + a.Morale;
+            var armyBTotal = b.Count + b.Morale;
+            if (armyATotal > armyBTotal)
+            {
+                return -1;
+            }
+            if (armyATotal < armyBTotal)
+            {
+                return 1;
+            }
+            return 0;
         }
-        if (armyAProfitability < armyBProfitability)
-        {
-            return 1;
-        }
-        var armyATotal = a.Count + a.Morale;
-        var armyBTotal = b.Count + b.Morale;
-        if (armyATotal > armyBTotal)
-        {
-            return -1;
-        }
-        if (armyATotal < armyBTotal)
-        {
-            return 1;
-        }
-        return 0;
     }
 }

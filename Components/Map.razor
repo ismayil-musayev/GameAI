@@ -2,10 +2,10 @@
 {
     @Board.Turns
     <div class="map">
-        @for (int i = 0; i < height; i++)
+        @for (int i = 0; i < Board.HwYmax; i++)
         {
             <div class="map-row">
-                @for (int j = 0; j < width; j++)
+                @for (int j = 0; j < Board.HwXmax; j++)
                 {
                     var field = Board.Fields[j][i];
                     <div class="@(j % 2 == 0 ? "map-col-even" : "map-col-odd")">
@@ -15,7 +15,6 @@
                             </svg>
                             <div class="hex-content">
                                 @field.TownName&nbsp;
-                                @*@field.Type*@
                                 @if (field.Army is not null)
                                 {
                                     <text>
@@ -50,6 +49,4 @@
             _ => "darkgreen",
         };
     }
-
-    int height = 11, width = 20;
 }

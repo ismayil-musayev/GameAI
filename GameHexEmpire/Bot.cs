@@ -174,7 +174,7 @@ public class Bot
         return movableArmies;
     }
 
-    public static NeighboursInfo CalcNeighboursInfo(int party, Field field)
+    private static NeighboursInfo CalcNeighboursInfo(int party, Field field)
     {
         var power = 0;
         var count = 0;
@@ -301,31 +301,31 @@ public class Bot
         return movableArmies;
     }
 
-    public class NeighboursInfo
+    private class NeighboursInfo
     {
         public int Power { get; set; }
         public int Count { get; set; }
         public int NonEnemyLand { get; set; }
         public bool WaitForSupport { get; set; }
     }
-}
 
-public class FieldComparer : IComparer<Field>
-{
-    public int Compare(Field a, Field b)
+    private class FieldComparer : IComparer<Field>
     {
-        var aValue = a.TmpProf;
-        var bValue = b.TmpProf;
-        if (aValue > bValue)
+        public int Compare(Field a, Field b)
         {
-            return -1;
-        }
+            var aValue = a.TmpProf;
+            var bValue = b.TmpProf;
+            if (aValue > bValue)
+            {
+                return -1;
+            }
 
-        if (aValue < bValue)
-        {
-            return 1;
-        }
+            if (aValue < bValue)
+            {
+                return 1;
+            }
 
-        return 0;
+            return 0;
+        }
     }
 }
