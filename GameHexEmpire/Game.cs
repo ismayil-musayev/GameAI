@@ -49,7 +49,7 @@ public class Game
     {
         return new Board
         {
-            HwInit = false, // false when game starts
+            HwInit = true, //in .swf; // false when game starts
             HwXmax = 20,
             HwYmax = 11,
             HwFw = 50,
@@ -81,6 +81,8 @@ public class Game
             Duel = false,
             Fields = new(),
             Armies = new(),
+            News = "",
+            NewsContent = new()
         };
     }
 
@@ -114,17 +116,26 @@ public class Game
         //const ctx = document.getElementById('map').getContext('2d');
         //ctx.drawImage(self.board.background_2, 0, 0);
         Map.UpdateBoard(board);
+        //});
+    }
+
+    public void SelectParty()
+    {
         Map.CalcAIHelpers(board);
         InitGame();
-        //});
     }
 
     public void InitGame()
     {
+        board.HwInit = false;
         for (var p = 0; p < board.HwPartiesCount; p++)
         {
             Map.UnitsSpawn(p, board);
             Map.UpdateBoard(board);
+            if (board.HwPartiesControl[p] == "human")
+            {
+                board.Human = p;
+            }
         }
         //this.mapRender.drawMap(board, this._images);
         turns = 0;
@@ -153,9 +164,6 @@ public class Game
 
         var movePoints = Map.GetMovePoints(turnParty, board);
 
-        Map.CleanupTurn(board);
-        Map.UpdateBoard(board);
-
         if (board.HwPartiesControl[turnParty] == "computer")
         {
             for (var i = 0; i < movePoints; i++)
@@ -164,9 +172,21 @@ public class Game
 
                 Map.UpdateArmies(board);
             }
-            Map.UnitsSpawn(turnParty, board);
+        }
+        else if (board.HwPartiesControl[turnParty] == "human")
+        {
+            for (var i = 0; i < movePoints; i++)
+            {
+                Map.MakeMove(turnParty, board/*, false*/);
+
+                Map.UpdateArmies(board);
+            }
         }
         //this.mapRender.drawMap(board, this._images);
+
+        Map.CleanupTurn(board);
+        Map.UpdateBoard(board);
+        Map.UnitsSpawn(turnParty, board);
     }
 
     public static bool IsDuel(Board board)

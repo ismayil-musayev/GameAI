@@ -363,13 +363,8 @@ public class Map
         else
         {
             var a = Rand(10);
-            if (a <= 1)
-            { }
             nfield.Type = a <= 1 ? Models.Type.Land : Models.Type.Water;
         }
-
-        if(x == 4 && y == 10)
-        { }
 
         nfield.Party = -1;
         nfield.Capital = -1;
@@ -932,8 +927,7 @@ public class Map
             }
             board.HwPartiesMorale[partyIndex] = (int)Math.Floor(morale);
         }
-        //var humanTotalPower = board.hw_parties_morale[board.human] + board.hw_parties_total_count[board.human];
-        int? humanTotalPower = null;
+        int? humanTotalPower = board.Human < 0 ? null : board.HwPartiesMorale[board.Human] + board.HwPartiesTotalCount[board.Human];
         var humanCondition = 1;
         for (var partyIndex = 0; partyIndex < board.HwPartiesCount; partyIndex++)
         {
@@ -1074,7 +1068,8 @@ public class Map
             }
             if (field.Type == Models.Type.Town)
             {
-                if (/*board.human == party && */ (board.Subject is null || board.Subject.Type != Models.Type.Capital))
+                if (board.Human == party &&
+                    (board.Subject is null || board.Subject.Type != Models.Type.Capital))
                 {
                     board.Subject = field;
                     if (field.Party >= 0)
@@ -1090,8 +1085,9 @@ public class Map
             }
             if (field.Type == Models.Type.Port)
             {
-                if (/*board.human == party &&*/ (board.Subject is null
-                    || (board.Subject.Type != Models.Type.Town && board.Subject.Type != Models.Type.Capital)))
+                if (board.Human == party && (board.Subject is null
+                    || (board.Subject.Type != Models.Type.Town
+                        && board.Subject.Type != Models.Type.Capital)))
                 {
                     board.Subject = field;
                     if (field.Party >= 0)
@@ -1135,8 +1131,8 @@ public class Map
                 }
                 if (field.Type == Models.Type.Town)
                 {
-                    if (board.Human == party && (board.Subject is null
-                        || board.Subject.Capital < 0))
+                    if (board.Human == party &&
+                        (board.Subject is null || board.Subject.Type != Models.Type.Capital))
                     {
                         board.Subject = field;
                         board.News = "town_lost";
@@ -1220,7 +1216,7 @@ public class Map
 
         if (profitability.Count == 0)
         {
-            Console.Error.WriteLine("No possible moves for party ", board.HwPartiesNames[party]);
+            Console.WriteLine("No possible moves for party ", board.HwPartiesNames[party]);
             return;
         }
 
@@ -1437,6 +1433,72 @@ public class Map
             movePoints = movableArmyCount;
         }
         return movePoints;
+    }
+
+    public static void HereIsTheNews(Board board)
+    {
+        if (board.News == "")
+        {
+            if (board.LhArea > board.HwPartiesLands[board.Human].Count)
+            {
+                board.News = "retreat";
+            }
+            else if (board.LhArea < board.HwPartiesLands[board.Human].Count)
+            {
+                board.News = "advance";
+            }
+            else if (board.HumanCondition == 0)
+            {
+                board.News = "victory_close";
+            }
+            else if (board.HumanCondition == 3)
+            {
+                board.News = "not_end";
+            }
+            else
+            {
+                board.News = "marika";
+            }
+        }
+        if (board.HwPactJustBroken >= 0)
+        {
+            board.News = "pact_broken";
+            board.HwPactJustBroken = -1;
+        }
+        switch (board.News)
+        {
+            case "pact_broken":
+                board.NewsContent.Title = "" + board.HwPartiesNames[board.HwPactJustBroken] + " broken!";
+                break;
+            case "province_conquered":
+                board.NewsContent.Title = "" + board.HwPartiesNames[board.Subject.Capital] + " on knees!";
+                board.NewsContent.AltTitle = "Long live " + board.HwPartiesNames[board.Human] + "!";
+                break;
+            case "town_annexed":
+                board.NewsContent.Title = "" + board.Subject.TownName + " annexed!";
+                break;
+            case "town_captured":
+                board.NewsContent.Title = "" + board.Subject.TownName + " captured!";
+                break;
+            case "town_lost":
+                board.NewsContent.Title = "" + board.Subject.TownName + " lost.";
+                break;
+            case "advance":
+                board.NewsContent.Title = "" + board.HwPartiesNames[board.Human] + " forces advance!";
+                break;
+            case "retreat":
+                break;
+        }
+    }
+
+    public static bool SignPact(int partyA, Board board)
+    {
+        if (board.HumanCondition > 1)
+        {
+            return false;
+        }
+        board.HwPeace = partyA;
+        return true;
     }
 
     private class ArmyComparer : IComparer<Army>

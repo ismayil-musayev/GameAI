@@ -176,16 +176,30 @@ public class PathFinder
             additionalNeighbours.Add(field.Neighbours[0].Neighbours[0]);
             additionalNeighbours.Add(field.Neighbours[0].Neighbours[1]);
         }
+        else
+        {
+            additionalNeighbours.Add(null);
+            additionalNeighbours.Add(null);
+        }
 
         if (field.Neighbours.Count > 1 && field.Neighbours[1] != null)
         {
             additionalNeighbours.Add(field.Neighbours[1].Neighbours[1]);
             additionalNeighbours.Add(field.Neighbours[1].Neighbours[2]);
         }
+        else
+        {
+            additionalNeighbours.Add(null);
+            additionalNeighbours.Add(null);
+        }
 
         if (field.Neighbours.Count > 2 && field.Neighbours[2] != null)
         {
             additionalNeighbours.Add(field.Neighbours[2].Neighbours[2]);
+        }
+        else
+        {
+            additionalNeighbours.Add(null);
         }
 
         if (field.Neighbours.Count > 3 && field.Neighbours[3] != null)
@@ -193,16 +207,30 @@ public class PathFinder
             additionalNeighbours.Add(field.Neighbours[3].Neighbours[3]);
             additionalNeighbours.Add(field.Neighbours[3].Neighbours[4]);
         }
+        else
+        {
+            additionalNeighbours.Add(null);
+            additionalNeighbours.Add(null);
+        }
 
         if (field.Neighbours.Count > 4 && field.Neighbours[4] != null)
         {
             additionalNeighbours.Add(field.Neighbours[4].Neighbours[4]);
             additionalNeighbours.Add(field.Neighbours[4].Neighbours[5]);
         }
+        else
+        {
+            additionalNeighbours.Add(null);
+            additionalNeighbours.Add(null);
+        }
 
         if (field.Neighbours.Count > 5 && field.Neighbours[5] != null)
         {
             additionalNeighbours.Add(field.Neighbours[5].Neighbours[5]);
+        }
+        else
+        {
+            additionalNeighbours.Add(null);
         }
 
         additionalNeighbours.Add(field.Neighbours.Count == 0 || field.Neighbours[0] == null
@@ -217,8 +245,7 @@ public class PathFinder
                 : null)
             : field.Neighbours[2].Neighbours[3]);
 
-        additionalNeighbours.AddRange(field.Neighbours);
-        return additionalNeighbours;
+        return field.Neighbours.Concat(additionalNeighbours).ToList();
     }
 
     public static List<Field> GetPossibleMoves(Field field, bool no_self, bool check_power)

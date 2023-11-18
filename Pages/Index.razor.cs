@@ -35,6 +35,11 @@ public partial class Index
         game.GenerateNewMap(Map);
     }
 
+    void PartySelected()
+    {
+        game.SelectParty();
+    }
+
     void MakeTurn()
     {
         if (game.IsVictory())

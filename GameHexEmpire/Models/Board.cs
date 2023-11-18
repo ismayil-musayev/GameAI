@@ -44,5 +44,12 @@ public class Board
     public bool Win { get; set; }
     public Field Subject { get; set; }
     public string News { get; set; }
+    public NewsContent NewsContent { get; set; }
     public Dictionary<string, Army> Armies { get; set; } = new();
+}
+
+public class NewsContent
+{
+    public string Title { get; set; }
+    public string AltTitle { get; set; }
 }

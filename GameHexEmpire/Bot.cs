@@ -14,7 +14,7 @@ public class Bot
             {
                 if (partyIndex != party)
                 {
-                    var profitability = -10000000;
+                    var profitability = 0;
                     // Other party still owns original capital city (party is currently owning party, capital is original owner)
                     if (board.HwPartiesCapitals[partyIndex].Party == board.HwPartiesCapitals[partyIndex].Capital)
                     {
@@ -83,7 +83,7 @@ public class Bot
                 // Opponent computer player with over 1.5 * total power of current party
                 // and they are both on left side (0,1) or right side (2,3)
                 if (field.Army.Party != board.Human
-                    && (field.Party >= 0 && board.HwPartiesTotalPower[field.Party] > 1.5 * board.HwPartiesTotalPower[party])
+                    && (board.HwPartiesTotalPower[field.Party] > 1.5 * board.HwPartiesTotalPower[party])
                     && (field.Army.Count + field.Army.Morale > army.Count + army.Morale)
                     && ((field.Party < 2 && party < 2) || (field.Party > 1 && party > 1)))
                 {
@@ -150,8 +150,7 @@ public class Bot
             }
 
             moves = moves.Order(new FieldComparer()).ToList();
-
-            return moves[0];
+            return moves.Count == 0 ? null : moves[0];
         }
 
         var movableArmies = GetMovableArmies(party, board);
@@ -256,7 +255,7 @@ public class Bot
             }
 
             supportMoves = supportMoves.Order(new FieldComparer()).ToList();
-            return supportMoves[0];
+            return supportMoves.Count == 0 ? null : supportMoves[0];
         }
 
         var moveableArmies = GetMovableArmies(party, board);
